@@ -18,12 +18,12 @@
     "test:watch": "yarn test --watchAll",
     "lint": "eslint ."
   },
-  "repository": "git@github.com:graasp/graasp-repo.git",
+  "repository": "git@github.com:graasp/graasp-plugin-admin.git",
   "license": "AGPL",
   "bugs": {
-    "url": "https://github.com/graasp/graasp-repo/issues"
+    "url": "https://github.com/graasp/graasp-plugin-admin/issues"
   },
-  "homepage": "https://github.com/graasp/graasp-repo#readme",
+  "homepage": "https://github.com/graasp/graasp-plugin-admin#readme",
   "devDependencies": {
     "@commitlint/cli": "16.0.1",
     "@commitlint/config-conventional": "16.0.0",

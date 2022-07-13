@@ -1,7 +1,7 @@
 // global
 import { Member } from 'graasp';
 import { AdminService } from './db-service';
-import { IsAdminTask } from './tasks/is-admin-task';
+import { GetMemberRolesTask } from './tasks/get-member-roles-task';
 // local
 
 export class TaskManager {
@@ -12,10 +12,10 @@ export class TaskManager {
   }
 
   getIsAdminTaskName(): string {
-    return IsAdminTask.name;
+    return GetMemberRolesTask.name;
   }
 
-  createIsAdminTask(member: Member): IsAdminTask {
-    return new IsAdminTask(member, this.adminService);
+  createIsAdminTask(member: Member): GetMemberRolesTask {
+    return new GetMemberRolesTask(member, this.adminService);
   }
 }

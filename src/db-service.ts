@@ -7,14 +7,17 @@ import { MemberRole } from './types';
  */
 export class AdminService {
 
-  // QUESTION: Can a member have multiple roles? Do we expect to have more roles besides admin and normal user? 
-  // We might want to return a MemberRole[] here
+  protected adminRoleId: string;
+
+  constructor(adminRoleId: string) {
+    this.adminRoleId = adminRoleId;
+  }
   /**
    * Get the role of given user
    * @param memberId 
    * @param dbHandler Database handler
    */
-  async getMemberRole(memberId: string, dbHandler: TrxHandler): Promise<MemberRole> {
+  async getMemberRole(memberId: string, dbHandler: TrxHandler): Promise<MemberRole[]> {
     return dbHandler
       .query<MemberRole>(
         sql`
@@ -23,6 +26,18 @@ export class AdminService {
         WHERE member_id = ${memberId}
         `,
       )
-      .then(({ rows }) => rows[0]);
+      .then(({ rows }) => rows.slice(0));
+  }
+
+  async isAdmin(memberId: string, dbHandler: TrxHandler): Promise<boolean> {
+    return dbHandler
+      .query<MemberRole>(
+        sql`
+        SELECT *
+        FROM member_role
+        WHERE member_id = ${memberId} and role_id = ${this.adminRoleId}
+        `,
+      )
+      .then(({ rows }) => Boolean(rows[0]));    
   }
 }

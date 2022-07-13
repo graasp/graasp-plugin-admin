@@ -1,14 +1,14 @@
 // global
 import { DatabaseTransactionHandler, Member } from 'graasp';
-import { ADMIN_ROLE_ID } from '../constants';
 import { AdminService } from '../db-service';
+import { MemberRole } from '../types';
 // local
 import { BaseAdminTask } from './base-admin-task';
 
-export class IsAdminTask extends BaseAdminTask<boolean> {
+export class GetMemberRolesTask extends BaseAdminTask<MemberRole[]> {
 
   get name(): string {
-    return IsAdminTask.name;
+    return GetMemberRolesTask.name;
   }
 
   constructor(member: Member, adminService: AdminService) {
@@ -20,9 +20,9 @@ export class IsAdminTask extends BaseAdminTask<boolean> {
 
     // get member role
     const { id: memberId } = this.actor;
-    const memberRole = await this.adminService.getMemberRole(memberId, handler);
-    // QUESTION: get the ADMIN_ROLE_ID from DB, or as a plugin option?
-    this._result = memberRole?.id === ADMIN_ROLE_ID;
+    const memberRoles = await this.adminService.getMemberRole(memberId, handler);
+
+    this._result = memberRoles;
     this.status = 'OK';
   }
 }

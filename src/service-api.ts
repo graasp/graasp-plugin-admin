@@ -1,24 +1,24 @@
 import { FastifyPluginAsync } from 'fastify';
 
 import { AdminService } from './db-service';
-import { isAdmin } from './schemas';
+import { memberRole } from './schemas';
 import { TaskManager } from './task-manager';
+export interface GraaspAdminPluginOptions {
+  adminRoleId: string,
+}
 
-// Placeholder for options
-// export interface GraaspAdminPluginOptions {
-// }
-
-const plugin: FastifyPluginAsync = async (fastify) => {
+const plugin: FastifyPluginAsync<GraaspAdminPluginOptions> = async (fastify, options) => {
   const {
     taskRunner: runner,
   } = fastify;
-  const adminService = new AdminService();
+  const { adminRoleId } = options;
+  const adminService = new AdminService(adminRoleId);
   const taskManager = new TaskManager(adminService);
 
-  // Check if current user is admin ( OR given user ? )
+  // Get the member roles of current user
   fastify.get(
-    '/admin/current',
-    { schema: isAdmin },
+    '/member-role/current',
+    { schema: memberRole },
     async ({ member, log }) => {
       const task = taskManager.createIsAdminTask(member);
       return runner.runSingle(task, log);

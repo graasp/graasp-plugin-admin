@@ -1,7 +1,7 @@
-export const isAdmin = {
+export const memberRole = {
   response: {
     200: {
-      type: 'boolean',
+      type: 'array',
     },
   },
 };
