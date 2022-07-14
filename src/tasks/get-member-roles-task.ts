@@ -18,7 +18,7 @@ export class GetMemberRolesTask extends BaseAdminTask<MemberRole[]> {
   async run(handler: DatabaseTransactionHandler): Promise<void> {
     this.status = 'RUNNING';
 
-    // get member role
+    // get member roles
     const { id: memberId } = this.actor;
     const memberRoles = await this.adminService.getMemberRole(memberId, handler);
 
