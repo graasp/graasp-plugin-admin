@@ -4,7 +4,7 @@ This repository is for backend of Graasp Admin.
 
 ## Related Tables (db-schema.sql)
 - role (id, name): Store role information
-- member_role (id, member_id, role_id): Store relationship between roles and members. A member could have multiple roles
+- member_role (id, member_id, role_id, created_at): Store relationship between roles and members. A member could have multiple roles
 
 ## Endpoints
 - /member-role/current: Get all memberRoles of current user
