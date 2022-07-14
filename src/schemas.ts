@@ -11,10 +11,10 @@ export default {
     },
     memberRole: {
       type: 'object',
-      required: ['id', 'name', 'roleId'],
+      required: ['id', 'memberId', 'roleId'],
       properties: {
         id: { $ref: 'http://graasp.org/#/definitions/uuid' },
-        name: { type: 'string' },
+        memberId: { $ref: 'http://graasp.org/#/definitions/uuid' },
         roleId: { $ref: 'http://graasp.org/#/definitions/uuid' }
       }
     },
