@@ -1,5 +1,6 @@
 import { FastifyLoggerInstance } from 'fastify';
 
+import { TaskStatus } from '@graasp/sdk';
 import {
   Actor,
   DatabaseTransactionHandler,
@@ -7,13 +8,13 @@ import {
   PostHookHandlerType,
   PreHookHandlerType,
   Task,
-  TaskStatus,
 } from '@graasp/sdk';
 
-import { AdminService } from '../db-service';
+import { AdminMemberService } from '../db-service';
 
-export abstract class BaseAdminTask<R> implements Task<Actor, R> {
-  protected adminService: AdminService;
+export abstract class BaseAdminItemTask<R> implements Task<Actor, R> {
+  // protected adminService: AdminService;
+  protected adminMemberService: AdminMemberService;
   protected _result!: R;
   protected _message!: string;
 
@@ -25,9 +26,10 @@ export abstract class BaseAdminTask<R> implements Task<Actor, R> {
   preHookHandler!: PreHookHandlerType<R>;
   postHookHandler!: PostHookHandlerType<R>;
 
-  constructor(actor: Actor, adminService: AdminService) {
+  constructor(actor: Actor, adminMemberService: AdminMemberService) {
     this.actor = actor;
-    this.adminService = adminService;
+    this.adminMemberService = adminMemberService;
+    // this.adminService = adminService;
     this.status = TaskStatus.NEW;
   }
 
@@ -42,5 +44,5 @@ export abstract class BaseAdminTask<R> implements Task<Actor, R> {
   abstract run(
     handler: DatabaseTransactionHandler,
     log?: FastifyLoggerInstance,
-  ): Promise<void | BaseAdminTask<R>[]>;
+  ): Promise<void | BaseAdminItemTask<R>[]>;
 }

@@ -6,8 +6,8 @@ export default {
       required: ['id', 'name'],
       properties: {
         id: { $ref: 'http://graasp.org/#/definitions/uuid' },
-        name: { type: 'string' }
-      }
+        name: { type: 'string' },
+      },
     },
     memberRole: {
       type: 'object',
@@ -15,8 +15,8 @@ export default {
       properties: {
         id: { $ref: 'http://graasp.org/#/definitions/uuid' },
         memberId: { $ref: 'http://graasp.org/#/definitions/uuid' },
-        roleId: { $ref: 'http://graasp.org/#/definitions/uuid' }
-      }
+        roleId: { $ref: 'http://graasp.org/#/definitions/uuid' },
+      },
     },
   },
 };
@@ -25,7 +25,7 @@ export const getMemberRole = {
   response: {
     200: {
       type: 'array',
-      items: { $ref: 'http://graasp.org/admin/#/definitions/memberRole' }
+      items: { $ref: 'http://graasp.org/admin/#/definitions/memberRole' },
     },
   },
 };

@@ -1,21 +1,16 @@
-// global
-import { Member } from 'graasp';
+import { Member, AdminTaskManager as TaskManager } from '@graasp/sdk';
+
 import { AdminService } from './db-service';
 import { GetMemberRolesTask } from './tasks/get-member-roles-task';
-// local
 
-export class TaskManager {
+export class AdminTaskManager implements TaskManager {
   private adminService: AdminService;
 
   constructor(adminService: AdminService) {
     this.adminService = adminService;
   }
 
-  getIsAdminTaskName(): string {
-    return GetMemberRolesTask.name;
-  }
-
-  createIsAdminTask(member: Member): GetMemberRolesTask {
-    return new GetMemberRolesTask(member, this.adminService);
+  createGetMemberRolesTask(member: Member, { validateRoleId }: { validateRoleId?: string } = {}) {
+    return new GetMemberRolesTask(member, this.adminService, { validateRoleId });
   }
 }

@@ -1,1 +1,1 @@
-export const ADMIN_ROLE_ID = '384ce83c-adce-446a-bde2-c2473c30a453';
+export const PLUGIN_NAME = 'graasp-plugin-admin';
