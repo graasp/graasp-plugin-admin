@@ -33,7 +33,8 @@ const plugin: FastifyPluginAsync<{ pageSize?: number }> = async (fastify, option
     '/all',
     { schema: getAll },
     async ({ member, log, query }) => {
-      const tasks = adminItemTaskManager.createGetAllTaskSequence(member, query.page);
+      const filters = { page: query.page, order: query.order, orderBy: query.orderBy };
+      const tasks = adminItemTaskManager.createGetAllTaskSequence(member, filters);
       return runner.runSingleSequence(tasks, log);
     },
   );

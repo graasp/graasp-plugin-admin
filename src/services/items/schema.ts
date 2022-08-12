@@ -60,6 +60,15 @@ export default {
 };
 
 export const getAll = {
+  querystring: {
+    type: 'object',
+    properties: {
+      page: { type: 'number' },
+      order: { type: 'string' },
+      orderBy: { enum: ['asc', 'desc'] },
+    },
+    additionalProperties: false,
+  },
   response: {
     200: {
       type: 'array',

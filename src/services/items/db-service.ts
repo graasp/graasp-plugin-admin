@@ -2,7 +2,7 @@ import { DatabaseTransactionConnection as TrxHandler, sql } from 'slonik';
 
 import { Item } from '@graasp/sdk';
 
-import { DEFAULT_PAGE_SIZE } from '../../constants';
+import { DEFAULT_PAGE_SIZE, QueryFilters } from '../../constants';
 
 // todo: better solution? some copy of core item db
 export class AdminItemService {
@@ -62,18 +62,24 @@ export class AdminItemService {
    * Get all items
    * @param transactionHandler Database transaction handler
    */
-  async getAll(args: { page?: number }, transactionHandler: TrxHandler): Promise<Item[]> {
+  async getAll(args: QueryFilters, transactionHandler: TrxHandler): Promise<Item[]> {
     const pageNb = args.page ?? 0;
-    const skip = pageNb * this.pageSize;
+    const offset = pageNb * this.pageSize;
     const limit = this.pageSize;
+
+    let orderBy = sql``;
+    if (args.orderBy) {
+      orderBy = sql` ORDER BY ${args.orderBy} ${args.order ?? 'ASC'} `;
+    }
 
     return transactionHandler
       .query<Item>(
         sql`
         SELECT ${AdminItemService.allColumns}
         FROM item
-        SKIP ${skip}
+        ${orderBy}
         LIMIT ${limit}
+        OFFSET ${offset}
       `,
       )
       .then(({ rows }) => rows as Item[]);
