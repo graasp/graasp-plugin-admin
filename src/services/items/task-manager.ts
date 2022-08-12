@@ -18,11 +18,11 @@ export class AdminItemTaskManager {
     this.adminItemService = adminItemService;
   }
 
-  createGetAllTaskSequence(member: Member): Task<Actor, unknown>[] {
+  createGetAllTaskSequence(member: Member, page: number = 0): Task<Actor, unknown>[] {
     const t1 = this.adminTaskManager.createGetMemberRolesTask(member, {
       validateRoleId: this.adminRoleId,
     }) as Task<Actor, unknown>;
-    const t2 = new GetAllTask(member, this.adminItemService);
+    const t2 = new GetAllTask(member, this.adminItemService, { page });
     return [t1, t2];
   }
 }

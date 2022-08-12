@@ -2,8 +2,12 @@ import { DatabaseTransactionConnection as TrxHandler, sql } from 'slonik';
 
 import { Item } from '@graasp/sdk';
 
+import { DEFAULT_PAGE_SIZE } from '../../constants';
+
 // todo: better solution? some copy of core item db
 export class AdminItemService {
+  pageSize: number;
+
   // the 'safe' way to dynamically generate the columns names:
   private static allColumns = sql.join(
     [
@@ -49,17 +53,27 @@ export class AdminItemService {
     sql`, `,
   );
 
+  constructor(pageSize?: number) {
+    this.pageSize = pageSize ?? DEFAULT_PAGE_SIZE;
+  }
+
   // todo: implement pagination + filters + order
   /**
    * Get all items
    * @param transactionHandler Database transaction handler
    */
-  async getAll(transactionHandler: TrxHandler): Promise<Item[]> {
+  async getAll(args: { page?: number }, transactionHandler: TrxHandler): Promise<Item[]> {
+    const pageNb = args.page ?? 0;
+    const skip = pageNb * this.pageSize;
+    const limit = this.pageSize;
+
     return transactionHandler
       .query<Item>(
         sql`
         SELECT ${AdminItemService.allColumns}
         FROM item
+        SKIP ${skip}
+        LIMIT ${limit}
       `,
       )
       .then(({ rows }) => rows as Item[]);

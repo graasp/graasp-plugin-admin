@@ -30,7 +30,7 @@ export class GetMemberRolesTask extends BaseAdminTask<MemberRole[]> {
         // todo: consider role hierarchy
         return roleId === this.validateRoleId;
       });
-      if (matchingMemberRole) {
+      if (!matchingMemberRole) {
         throw new MemberNotAdmin(memberId);
       }
     }

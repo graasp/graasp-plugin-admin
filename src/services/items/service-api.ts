@@ -3,12 +3,14 @@ import fp from 'fastify-plugin';
 
 import '@graasp/sdk';
 
+import { QueryFilters } from '../../constants';
 import { AdminItemService } from './db-service';
 import itemSchema, { getAll } from './schema';
 import { AdminItemTaskManager } from './task-manager';
 
-const plugin: FastifyPluginAsync = async (fastify) => {
+const plugin: FastifyPluginAsync<{ pageSize?: number }> = async (fastify, options) => {
   const { taskRunner: runner, admin } = fastify;
+  const { pageSize } = options;
 
   if (!admin) {
     // TODO
@@ -19,7 +21,7 @@ const plugin: FastifyPluginAsync = async (fastify) => {
 
   const { taskManager: adminTaskManager, adminRoleId } = admin;
 
-  const adminItemService = new AdminItemService();
+  const adminItemService = new AdminItemService(pageSize);
   const adminItemTaskManager = new AdminItemTaskManager(
     adminTaskManager,
     adminItemService,
@@ -27,10 +29,14 @@ const plugin: FastifyPluginAsync = async (fastify) => {
   );
 
   // Get the member roles of current user
-  fastify.get('/all', { schema: getAll }, async ({ member, log }) => {
-    const tasks = adminItemTaskManager.createGetAllTaskSequence(member);
-    return runner.runSingleSequence(tasks, log);
-  });
+  fastify.get<{ Querystring: QueryFilters }>(
+    '/all',
+    { schema: getAll },
+    async ({ member, log, query }) => {
+      const tasks = adminItemTaskManager.createGetAllTaskSequence(member, query.page);
+      return runner.runSingleSequence(tasks, log);
+    },
+  );
 };
 
 export default fp(plugin, {
