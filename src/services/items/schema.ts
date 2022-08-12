@@ -64,8 +64,8 @@ export const getAll = {
     type: 'object',
     properties: {
       page: { type: 'number' },
-      order: { type: 'string' },
-      orderBy: { enum: ['asc', 'desc'] },
+      orderBy: { type: 'string' },
+      order: { enum: ['asc', 'desc'] },
     },
     additionalProperties: false,
   },
