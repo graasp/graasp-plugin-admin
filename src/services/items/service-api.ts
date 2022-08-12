@@ -4,7 +4,7 @@ import fp from 'fastify-plugin';
 import '@graasp/sdk';
 
 import { AdminItemService } from './db-service';
-import { getAll } from './schema';
+import itemSchema, { getAll } from './schema';
 import { AdminItemTaskManager } from './task-manager';
 
 const plugin: FastifyPluginAsync = async (fastify) => {
@@ -14,6 +14,8 @@ const plugin: FastifyPluginAsync = async (fastify) => {
     // TODO
     throw new Error();
   }
+
+  fastify.addSchema(itemSchema);
 
   const { taskManager: adminTaskManager, adminRoleId } = admin;
 
